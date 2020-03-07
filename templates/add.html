@@ -8,16 +8,16 @@
             <div class="container border rounded py-2">
                 <form method="POST">
                     <div class="form-group">
-                        <label for="inputRus">Слово на русском</label>
-                        <input required class="form-control" name='inputRus' id='inputRus' placeholder="Русское слово">
+                        <label for="rus">Слово на русском</label>
+                        <input required class="form-control" name='rus' id='rus' placeholder="Русское слово">
                     </div>
                     <div class="form-group">
-                        <label for="inputCz">Слово на чешском</label>
-                        <input required class="form-control" name='inputCz' id='inputCz' placeholder="Чешское слово">
+                        <label for="cz">Слово на чешском</label>
+                        <input required class="form-control" name='cz' id='cz' placeholder="Чешское слово">
                     </div>
                     <div class="form-group">
-                        <label for="selectPartOfSpeech">Часть речи</label>
-                        <select required class="form-control" name='selectPartOfSpeech' id='selectPartOfSpeech'
+                        <label for="part_of_speech">Часть речи</label>
+                        <select required class="form-control" name='part_of_speech' id='part_of_speech'
                                 onchange="showGender(this.value)">
                             {% for item in parts_of_speech.items() %}
                             <option value="{{item[0]}}">{{ item[1] }}</option>
@@ -26,16 +26,16 @@
                         </select>
                     </div>
                     <div class="form-group" style="display: none" id="genderFormGroup">
-                        <label for="selectGender">Род</label>
-                        <select class="form-control" name="selectGender" id="selectGender">
+                        <label for="gender">Род</label>
+                        <select class="form-control" name="gender" id="gender">
                             {% for item in genders.items() %}
                             <option value="{{item[0]}}">{{ item[1] }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group" style="display: none" id="formFormGroup">
-                        <label for="selectForm">Число</label>
-                        <select class="form-control" name="selectForm" id="selectForm">
+                        <label for="form">Число</label>
+                        <select class="form-control" name="form" id="form">
                             {% for item in forms.items() %}
                             <option value="{{item[0]}}">{{ item[1] }}</option>
                             {% endfor %}
@@ -76,12 +76,12 @@
                 </thead>
                 <tbody>
                 {% for word in words_list %}
-                <tr style="cursor: pointer;"  onclick="editWord( '{{ word.rus }}', '{{ word.ch }}',
+                <tr style="cursor: pointer;"  onclick="editWord( '{{ word.rus }}', '{{ word.cz }}',
                                                                  '{{ word.part_of_speech }}', '{{ word.gender }}',
                                                                  '{{ word.form }}' )">
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ word.rus }}</td>
-                    <td>{{ word.ch }}</td>
+                    <td>{{ word.cz }}</td>
                     <td>{{ parts_of_speech[word.part_of_speech] }}</td>
                     <td>{{ genders[word.gender] }}</td>
                     <td>{{ forms[word.form] }}</td>
@@ -114,11 +114,11 @@ function showGender(val) {
 }
 
 function editWord(rus, cz, part_of_speech, gender, form) {
-    var inputRus = document.getElementById("inputRus");
-    var inputCz = document.getElementById("inputCz");
-    var selectPartOfSpeech = document.getElementById("selectPartOfSpeech");
-    var selectGender = document.getElementById("selectGender");
-    var selectForm = document.getElementById("selectForm");
+    var inputRus = document.getElementById("rus");
+    var inputCz = document.getElementById("cz");
+    var selectPartOfSpeech = document.getElementById("part_of_speech");
+    var selectGender = document.getElementById("gender");
+    var selectForm = document.getElementById("form");
 
     var genderFormGroup = document.getElementById("genderFormGroup");
     var formFormGroup = document.getElementById("formFormGroup");
