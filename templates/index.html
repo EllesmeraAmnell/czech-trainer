@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+<!---------- Navigation ----------->
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link active" href="/index">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/quiz">Quiz</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/edit_db">Edit words</a>
+</li>
+{% endblock %}
+
 <!---------- Content ----------->
 {% block content %}
 <div class="col-4">
@@ -49,9 +62,6 @@
 
 <script>
 
-function showGender(val) {
-
-}
 
 </script>
 

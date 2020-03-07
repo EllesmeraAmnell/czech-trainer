@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+<!---------- Navigation ----------->
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link" href="/index">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/quiz">Quiz</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" href="/edit_db">Edit words</a>
+</li>
+{% endblock %}
+
 <!---------- Content ----------->
 {% block content %}
 <div class="col-4">
@@ -18,7 +31,7 @@
                     <div class="form-group">
                         <label for="part_of_speech">Часть речи</label>
                         <select required class="form-control" name='part_of_speech' id='part_of_speech'
-                                onchange="showGender(this.value)">
+                                onchange="showNounFields(this.value)">
                             {% for item in parts_of_speech.items() %}
                             <option value="{{item[0]}}">{{ item[1] }}</option>
                             {% endfor %}
@@ -101,7 +114,7 @@
 
 <script>
 
-function showGender(val) {
+function showNounFields(val) {
     var gender = document.getElementById("genderFormGroup");
     var form = document.getElementById("formFormGroup");
     if (val == "noun") {
@@ -123,13 +136,13 @@ function editWord(rus, cz, part_of_speech, gender, form) {
     var genderFormGroup = document.getElementById("genderFormGroup");
     var formFormGroup = document.getElementById("formFormGroup");
 
-    inputRus.value = rus
-    inputCz.value = cz
-    selectPartOfSpeech.value = part_of_speech
+    inputRus.value = rus;
+    inputCz.value = cz;
+    selectPartOfSpeech.value = part_of_speech;
 
     if (part_of_speech == "noun") {
-        selectGender.value = gender
-        selectForm.value = form
+        selectGender.value = gender;
+        selectForm.value = form;
         genderFormGroup.style.display = "block";
         formFormGroup.style.display = "block";
     } else {
