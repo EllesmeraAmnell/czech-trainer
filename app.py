@@ -1,4 +1,7 @@
-from common import Word, add_new_word, get_words_list, delete_word
+from pymongo import MongoClient
+
+from core.words import Word
+from core.utils import add_new_word, get_words_list
 from const import GENDERS, PARTS_OF_SPEECH, FORMS
 from flask import Flask, render_template, request
 
@@ -7,6 +10,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index', methods=['POST', 'GET'])
+@app.route('/add', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
 
