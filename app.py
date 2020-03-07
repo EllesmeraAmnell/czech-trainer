@@ -1,4 +1,4 @@
-from common import Word, add_new_word, get_words_list
+from common import Word, add_new_word, get_words_list, delete_word
 from const import GENDERS, PARTS_OF_SPEECH, FORMS
 from flask import Flask, render_template, request
 
@@ -7,19 +7,31 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index', methods=['POST', 'GET'])
-@app.route('/add', methods=['POST', 'GET'])
 def index():
-    word = None
+    return render_template('index.html')
+
+
+@app.route('/add', methods=['POST', 'GET'])
+def add():
+    result = None
     if request.method == 'POST':
         rus = request.form['inputRus']
-        ch = request.form['inputCh']
+        ch = request.form['inputCz']
         word_type = request.form['selectPartOfSpeech']
         gender = request.form['selectGender']
         form = request.form['selectForm']
         word = Word(rus, ch, word_type, gender, form)
-        add_new_word(word)
+        try:
+            if 'saveButton' in request.form:
+                add_new_word(word)
+                result = 'Слово успешно сохранено!'
+            if 'deleteButton' in request.form:
+                delete_word(word)
+                result = 'Слово успешно удалено!'
+        except:
+            result = 'Ошибка!'
     words_list = get_words_list()
-    return render_template('index.html', result=word, words_list=words_list,
+    return render_template('add.html', result=result, words_list=words_list,
                            genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH, forms=FORMS)
 
 

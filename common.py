@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 
-service = "http://localhost:5000/"
 client = MongoClient('localhost', 27017)
 collection = client.czech.words
 
@@ -34,6 +33,10 @@ def add_new_word(word):
         collection.update_one({'rus': word.rus}, {'$set': word.get_dict()})
     else:
         collection.insert_one(word.get_dict())
+
+
+def delete_word(word):
+    res = collection.delete_one({'rus': word.rus})
 
 
 def get_words_list(limit=None, skip=None):
