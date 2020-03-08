@@ -48,8 +48,16 @@ def edit_db():
 
 
 @app.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html', title='404'), 404
+def error_404(error_info):
+    return render_template('error_page.html', title='404', error_info=error_info, error_code=' 404',
+                           error_text='страница не найдена'), 404
+
+
+@app.errorhandler(500)
+@app.errorhandler(Exception)
+def error_500(error_info):
+    return render_template('error_page.html', title='500', error_info=error_info, error_code=' 500',
+                           error_text='внутренняя ошибка сервера'), 500
 
 
 if __name__ == '__main__':
