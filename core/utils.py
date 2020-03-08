@@ -1,28 +1,29 @@
 import logging
+import os
 
 from core.word import Word
 from pymongo import MongoClient
 from random import Random
 
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-client = MongoClient('localhost', 27017)
+
+host = os.environ['MONGO_HOST'] if 'MONGO_HOST' in os.environ else 'localhost'
+client = MongoClient(host, 27017)
 collection = client.czech.words
 collection.create_index('rus')
 
 
 def save_word(word):
     logger.info(f'Saving word: {word}')
-    res = collection.find_one({'rus': word.rus})
-    if res:
-        collection.update_one({'rus': word.rus}, {'$set': word.get_dict()})
+    if word._id:
+        collection.update_one({'_id': word._id}, {'$set': word.get_dict()})
     else:
         collection.insert_one(word.get_dict())
 
 
 def delete_word(word):
     logger.info(f'Deleting word: {word}')
-    collection.delete_one({'rus': word.rus})
+    collection.delete_one({'_id': word._id})
 
 
 def get_words_list(limit=None, skip=None):

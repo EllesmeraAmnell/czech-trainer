@@ -54,5 +54,5 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     logger.info('*' * 80)
-    # app.run(host='0.0.0.0', port=4000, passthrough_errors=True, debug=False)  # for public
-    app.run(port=4000, passthrough_errors=False, debug=True)  # for debug
+    app.run(host='0.0.0.0', port=4000, passthrough_errors=True, debug=False)  # for public
+    # app.run(port=4000, passthrough_errors=False, debug=True)  # for debug

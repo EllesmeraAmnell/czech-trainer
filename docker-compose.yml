@@ -1,0 +1,19 @@
+web:
+  image: czech-trainer:1.0.0
+  command: python -u app.py
+  container_name: czech-trainer
+  ports:
+    - "4000:4000"
+  volumes:
+    - .:/app
+  links:
+    - db
+  restart: unless-stopped
+  environment:
+    MONGO_HOST: db
+db:
+  image: mongo:4.0.8
+  container_name: mongo-db
+  restart: unless-stopped
+  volumes:
+    - ./mongodbdata:/data/db
