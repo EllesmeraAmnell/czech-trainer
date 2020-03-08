@@ -1,12 +1,14 @@
 import logging
+import os
 
 from core.word import Word
 from pymongo import MongoClient
 from random import Random
 
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-client = MongoClient('localhost', 27017)
+
+host = os.environ['MONGO_HOST'] if 'MONGO_HOST' in os.environ else 'localhost'
+client = MongoClient(host, 27017)
 collection = client.czech.words
 collection.create_index('rus')
 
