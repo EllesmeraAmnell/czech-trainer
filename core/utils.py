@@ -1,19 +1,28 @@
+import logging
+
+from core.word import Word
+from pymongo import MongoClient
 from random import Random
 
-from pymongo import MongoClient
-from core.words import Word
-
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 client = MongoClient('localhost', 27017)
 collection = client.czech.words
 collection.create_index('rus')
 
 
-def add_new_word(word):
+def save_word(word):
+    logger.info(f'Saving word: {word}')
     res = collection.find_one({'rus': word.rus})
     if res:
         collection.update_one({'rus': word.rus}, {'$set': word.get_dict()})
     else:
         collection.insert_one(word.get_dict())
+
+
+def delete_word(word):
+    logger.info(f'Deleting word: {word}')
+    collection.delete_one({'rus': word.rus})
 
 
 def get_words_list(limit=None, skip=None):
@@ -25,19 +34,20 @@ def get_words_list(limit=None, skip=None):
     return list(res) if res else None
 
 
-def get_new_variant(count):
+def get_random_words(count):
     n = collection.count_documents({})
     if n < count:
-        raise Exception("Error: not enough words in DB")
-    rand_numbers = []
-    variant = []
+        logger.error(f'Not enough words in database: {n}. Requested: {count}.')
+        raise Exception(f'ERROR: Not enough words in database: {n}. Requested: {count}.')
+    used_indexes = []
+    random_words = []
     random = Random()
-    for i in range(0, count):
-        rand_index = random.randint(0, n - 1)
-        while rand_index in rand_numbers:
-            rand_index = random.randint(0, n - 1)
-        rand_numbers.append(rand_index)
-        record = get_words_list(limit=1, skip=rand_index)
-        word = Word(record[0])
-        variant.append(word)
-    return variant
+    for _ in range(count):
+        new_index = random.randint(0, n - 1)
+        while new_index in used_indexes:
+            new_index = random.randint(0, n - 1)
+        used_indexes.append(new_index)
+        words_list = get_words_list(limit=1, skip=new_index)
+        word = Word(words_list[0])
+        random_words.append(word)
+    return random_words

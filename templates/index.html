@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+<!---------- Navigation ----------->
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link active" href="/index">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/quiz">Quiz</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/edit_db">Edit words</a>
+</li>
+{% endblock %}
+
 <!---------- Content ----------->
 {% block content %}
 <div class="col-4">
@@ -8,39 +21,14 @@
             <div class="container border rounded py-2">
                 <form method="POST">
                     <div class="form-group">
-                        <label for="inputRus">Слово на русском</label>
-                        <input required class="form-control" name='inputRus' placeholder="Русское слово">
+                        <label for="login">Логин</label>
+                        <input required class="form-control" name='login' placeholder="Логин">
                     </div>
                     <div class="form-group">
-                        <label for="inputCh">Слово на чешском</label>
-                        <input required class="form-control" name='inputCh' placeholder="Чешское слово">
+                        <label for="password">Пароль</label>
+                        <input required class="form-control" name='password' placeholder="Пароль">
                     </div>
-                    <div class="form-group">
-                        <label for="selectpPartOfSpeech">Часть речи</label>
-                        <select required class="form-control" name='selectPartOfSpeech' onchange="showGender(this.value)">
-                            {% for item in parts_of_speech.items() %}
-                            <option value="{{item[0]}}">{{ item[1] }}</option>
-                            {% endfor %}
-
-                        </select>
-                    </div>
-                    <div class="form-group" style="display: none" id="genderFormGroup">
-                        <label for="selectGender">Род</label>
-                        <select class="form-control" name="selectGender">
-                            {% for item in genders.items() %}
-                            <option value="{{item[0]}}">{{ item[1] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group" style="display: none" id="formFormGroup">
-                        <label for="selectForm">Число</label>
-                        <select class="form-control" name="selectForm">
-                            {% for item in forms.items() %}
-                            <option value="{{item[0]}}">{{ item[1] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-dark">Сохранить</button>
+                    <button type="submit" class="btn btn-dark">Войти</button>
                 </form>
             </div>
         </div>
@@ -50,7 +38,7 @@
     <div class="row-fluid my-3">
         <div class="col">
             <div class="container border rounded py-2">
-                Слово сохранено! {{ result }}
+               {{ result }}
             </div>
         </div>
     </div>
@@ -61,29 +49,6 @@
 <div class="col-8">
     <div class="row-fluid">
         <div class="col">
-            <table class="table table-sm table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col" width="2%">№</th>
-                        <th scope="col" width="20%">Русское слово</th>
-                        <th scope="col" width="20%">Чешское слово</th>
-                        <th scope="col" width="20%">Часть речи</th>
-                        <th scope="col" width="19%">Род</th>
-                        <th scope="col" width="19%">Число</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for word in words_list %}
-                    <tr>
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ word.rus }}</td>
-                        <td>{{ word.ch }}</td>
-                        <td>{{ parts_of_speech[word.part_of_speech] }}</td>
-                        <td>{{ genders[word.gender] }}</td>
-                        <td>{{ forms[word.form] }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
         </div>
     </div>
 </div>
@@ -97,17 +62,6 @@
 
 <script>
 
-function showGender(val) {
-    var gender = document.getElementById("genderFormGroup");
-    var form = document.getElementById("formFormGroup");
-    if (val == "noun") {
-        gender.style.display = "block";
-        form.style.display = "block";
-    } else {
-        gender.style.display = "none";
-        form.style.display = "none";
-    }
-}
 
 </script>
 
