@@ -4,8 +4,6 @@ web:
   container_name: czech-trainer
   ports:
     - "4000:4000"
-  volumes:
-    - .:/app
   links:
     - db
   restart: unless-stopped
