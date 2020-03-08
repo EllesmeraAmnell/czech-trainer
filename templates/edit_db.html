@@ -54,6 +54,7 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <input type="hidden" id="_id" name="_id">
                     <input type="submit" name="saveButton" class="btn btn-sm btn-dark" value="Сохранить">
                     <input type="submit" name="deleteButton" class="btn btn-sm btn-dark" value="Удалить">
                 </form>
@@ -89,7 +90,7 @@
                 </thead>
                 <tbody>
                 {% for word in words_list %}
-                <tr style="cursor: pointer;"  onclick="editWord( '{{ word.rus }}', '{{ word.cz }}',
+                <tr style="cursor: pointer;"  onclick="editWord( '{{ word._id }}', '{{ word.rus }}', '{{ word.cz }}',
                                                                  '{{ word.part_of_speech }}', '{{ word.gender }}',
                                                                  '{{ word.form }}' )">
                     <th scope="row">{{ loop.index }}</th>
@@ -126,7 +127,8 @@ function showNounFields(val) {
     }
 }
 
-function editWord(rus, cz, part_of_speech, gender, form) {
+function editWord(id, rus, cz, part_of_speech, gender, form) {
+    var inputId = document.getElementById("_id");
     var inputRus = document.getElementById("rus");
     var inputCz = document.getElementById("cz");
     var selectPartOfSpeech = document.getElementById("part_of_speech");
@@ -136,6 +138,7 @@ function editWord(rus, cz, part_of_speech, gender, form) {
     var genderFormGroup = document.getElementById("genderFormGroup");
     var formFormGroup = document.getElementById("formFormGroup");
 
+    inputId.value = id;
     inputRus.value = rus;
     inputCz.value = cz;
     selectPartOfSpeech.value = part_of_speech;
