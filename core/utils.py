@@ -51,3 +51,11 @@ def get_random_words(count):
         word = Word(words_list[0])
         random_words.append(word)
     return random_words
+
+
+def normalize_string(str_to_format):
+    return str_to_format.strip()[0].upper() + str_to_format.strip()[1:]
+
+
+def is_exception():
+    raise NotImplemented
