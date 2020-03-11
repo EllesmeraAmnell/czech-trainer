@@ -4,8 +4,8 @@ FORMS = {
 }
 
 GENDERS = {
-    'masculine_animate': 'Мужской (одушевленный)',
     'masculine_inanimate': 'Мужской (неодушевленный)',
+    'masculine_animate': 'Мужской (одушевленный)',
     'feminine': 'Женский',
     'neuter': 'Средний',
     'no': 'Отсутсвует'

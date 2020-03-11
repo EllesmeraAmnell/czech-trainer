@@ -55,8 +55,12 @@
                         </select>
                     </div>
                     <input type="hidden" id="_id" name="_id">
-                    <input type="submit" name="saveButton" class="btn btn-sm btn-dark" value="Сохранить">
-                    <input type="submit" name="deleteButton" class="btn btn-sm btn-dark" value="Удалить">
+                    <input type="submit" name="saveButton" id="saveButton" class="btn btn-sm btn-dark"
+                           value="Добавить">
+                    <input type="submit" name="deleteButton" id="deleteButton" class="btn btn-sm btn-dark"
+                           value="Удалить" style="display: none">
+                    <input type="reset" name="resetButton" id="resetButton" class="btn btn-sm btn-outline-dark"
+                           value="Отмена" style="display: none" onclick="resetForm()">
                 </form>
             </div>
         </div>
@@ -124,6 +128,13 @@ function showNounFields(val) {
 }
 
 function editWord(id, rus, cz, part_of_speech, gender, form) {
+    var saveButton = document.getElementById("saveButton");
+    var resetButton = document.getElementById("resetButton");
+    var deleteButton = document.getElementById("deleteButton");
+    saveButton.value = "Сохранить"
+    deleteButton.style.display = "inline-block";
+    resetButton.style.display = "inline-block";
+
     var inputId = document.getElementById("_id");
     var inputRus = document.getElementById("rus");
     var inputCz = document.getElementById("cz");
@@ -150,6 +161,28 @@ function editWord(id, rus, cz, part_of_speech, gender, form) {
     }
 }
 
+function resetForm(val) {
+    var saveButton = document.getElementById("saveButton");
+    var resetButton = document.getElementById("resetButton");
+    var deleteButton = document.getElementById("deleteButton");
+    saveButton.value = "Добавить"
+    deleteButton.style.display = "none";
+    resetButton.style.display = "none";
+
+    var inputId = document.getElementById("_id");
+    var inputRus = document.getElementById("rus");
+    var inputCz = document.getElementById("cz");
+    var selectPartOfSpeech = document.getElementById("part_of_speech");
+    var selectGender = document.getElementById("gender");
+    var selectForm = document.getElementById("form");
+
+    inputId.value = ""
+    inputRus.value = "";
+    inputCz.value = "";
+    selectPartOfSpeech.value = "";
+    genderFormGroup.style.display = "none";
+    formFormGroup.style.display = "none";
+}
 
 </script>
 

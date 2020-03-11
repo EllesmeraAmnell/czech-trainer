@@ -1,14 +1,19 @@
 import logging
-from random import Random
 
 from core.word import Word
 from core.utils import save_word, get_words_list, delete_word, get_random_words
 from core.const import GENDERS, PARTS_OF_SPEECH, FORMS
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
+from random import Random
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(".", 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/', methods=['GET'])
@@ -42,8 +47,7 @@ def edit_db():
             if 'saveButton' in request.form:
                 save_word(word)
                 result = 'Слово успешно сохранено!'
-            if 'deleteButton' in request.form:
-                delete_word(word)
+            if 'deleteButton' in request.form and delete_word(word):
                 result = 'Слово успешно удалено!'
         except Exception as e:
             result = 'Ошибка!'
