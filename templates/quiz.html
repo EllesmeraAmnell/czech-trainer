@@ -15,10 +15,10 @@
 
 <!---------- Content ----------->
 {% block content %}
-<div class="col-6 offset-3">
+<div class="col-sm-6 offset-sm-3">
     <div class="row-fluid">
         <div class="col container border rounded py-2">
-            <p>Выберите правильный перевод слова {{ question }}</p>
+            <p>Выберите правильный перевод слова <b>{{ question }}</b></p>
             <div class="list-group ">
                 {% for option in options %}
                 <button type="button" class="list-group-item list-group-item-action" onclick="checkAnswer(this)"
