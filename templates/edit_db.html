@@ -15,9 +15,9 @@
 
 <!---------- Content ----------->
 {% block content %}
-<div class="col-4">
+<div class="col-md-4 mb-3">
     <div class="row-fluid">
-        <div class="col">
+        <div class="col-md">
             <div class="container border rounded py-2">
                 <form method="POST">
                     <div class="form-group">
@@ -64,7 +64,7 @@
 
     {% if result %}
     <div class="row-fluid my-3">
-        <div class="col">
+        <div class="col-md">
             <div class="container border rounded py-2">
                 {{ result }}
             </div>
@@ -74,36 +74,32 @@
 
 </div>
 
-<div class="col-8">
-    <div class="row-fluid">
-        <div class="col">
-            <table class="table table-sm table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col" width="2%">№</th>
-                    <th scope="col" width="20%">Русское слово</th>
-                    <th scope="col" width="20%">Чешское слово</th>
-                    <th scope="col" width="20%">Часть речи</th>
-                    <th scope="col" width="19%">Род</th>
-                    <th scope="col" width="19%">Число</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for word in words_list %}
-                <tr style="cursor: pointer;"  onclick="editWord( '{{ word._id }}', '{{ word.rus }}', '{{ word.cz }}',
+<div class="col-md-8">
+    <table class="table table-sm table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col" width="2%">№</th>
+            <th scope="col" width="20%">Русское слово</th>
+            <th scope="col" width="20%">Чешское слово</th>
+            <th scope="col" width="20%">Часть речи</th>
+            <th scope="col" width="19%">Род</th>
+            <th scope="col" width="19%">Число</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for word in words_list %}
+        <tr style="cursor: pointer;" onclick="editWord( '{{ word._id }}', '{{ word.rus }}', '{{ word.cz }}',
                                                                  '{{ word.part_of_speech }}', '{{ word.gender }}',
                                                                  '{{ word.form }}' )">
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ word.rus }}</td>
-                    <td>{{ word.cz }}</td>
-                    <td>{{ parts_of_speech[word.part_of_speech] }}</td>
-                    <td>{{ genders[word.gender] }}</td>
-                    <td>{{ forms[word.form] }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ word.rus }}</td>
+            <td>{{ word.cz }}</td>
+            <td>{{ parts_of_speech[word.part_of_speech] }}</td>
+            <td>{{ genders[word.gender] }}</td>
+            <td>{{ forms[word.form] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock %}

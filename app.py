@@ -9,11 +9,10 @@ from flask import Flask, render_template, request
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
 
-@app.route('/', methods=['POST', 'GET'])
-@app.route('/index', methods=['POST', 'GET'])
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -27,7 +26,14 @@ def quiz():
     return render_template('quiz.html', question=question, answer=answer, options=options)
 
 
-@app.route('/edit_db', methods=['POST', 'GET'])
+@app.route('/edit_db', methods=['GET'])
+def show_db():
+    words_list = get_words_list()
+    return render_template('show_db.html', words_list=words_list, genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH,
+                           forms=FORMS)
+
+
+@app.route('/edit_db_super_secret_pf8wls', methods=['POST', 'GET'])
 def edit_db():
     result = None
     if request.method == 'POST':
