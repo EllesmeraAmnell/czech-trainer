@@ -9,7 +9,7 @@
     <a class="nav-link" href="/quiz">Упражнения</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/edit_db">Словарь</a>
+    <a class="nav-link active" href="/words">Словарь</a>
 </li>
 {% endblock %}
 
@@ -22,45 +22,68 @@
                 <form method="POST">
                     <div class="form-group">
                         <label for="rus">Слово на русском</label>
-                        <input required class="form-control" name='rus' id='rus' placeholder="Русское слово">
+                        <input required class="form-control form-control-sm" name='rus' id='rus'
+                               placeholder="Русское слово">
                     </div>
                     <div class="form-group">
                         <label for="cz">Слово на чешском</label>
-                        <input required class="form-control" name='cz' id='cz' placeholder="Чешское слово">
+                        <input required class="form-control form-control-sm" name='cz' id='cz'
+                               placeholder="Чешское слово">
                     </div>
                     <div class="form-group">
                         <label for="part_of_speech">Часть речи</label>
-                        <select required class="form-control" name='part_of_speech' id='part_of_speech'
+                        <select required class="form-control form-control-sm" name='part_of_speech' id='part_of_speech'
                                 onchange="showNounFields(this.value)">
                             {% for item in parts_of_speech.items() %}
+                            {% if item[0]==form_data['part_of_speech'] %}
+                            <option value="{{item[0]}}" selected>{{ item[1] }}</option>
+                            {% else %}
                             <option value="{{item[0]}}">{{ item[1] }}</option>
+                            {% endif %}
                             {% endfor %}
 
                         </select>
                     </div>
-                    <div class="form-group" style="display: none" id="genderFormGroup">
-                        <label for="gender">Род</label>
-                        <select class="form-control" name="gender" id="gender">
-                            {% for item in genders.items() %}
-                            <option value="{{item[0]}}">{{ item[1] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group" style="display: none" id="formFormGroup">
-                        <label for="form">Число</label>
-                        <select class="form-control" name="form" id="form">
-                            {% for item in forms.items() %}
-                            <option value="{{item[0]}}">{{ item[1] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <input type="hidden" id="_id" name="_id">
-                    <input type="submit" name="saveButton" id="saveButton" class="btn btn-sm btn-dark"
-                           value="Добавить">
-                    <input type="submit" name="deleteButton" id="deleteButton" class="btn btn-sm btn-dark"
-                           value="Удалить" style="display: none">
-                    <input type="reset" name="resetButton" id="resetButton" class="btn btn-sm btn-outline-dark"
-                           value="Отмена" style="display: none" onclick="resetForm()">
+                    {% if form_data['part_of_speech'] == 'noun' %}
+                    <div class="form-group" id="genderFormGroup">
+                        {% else %}
+                        <div class="form-group" style="display: none" id="genderFormGroup">
+                            {% endif %}
+                            <label for="gender">Род</label>
+                            <select class="form-control form-control-sm" name="gender" id="gender">
+                                {% for item in genders.items() %}
+                                {% if item[0]==form_data['gender'] %}
+                                <option value="{{item[0]}}" selected>{{ item[1] }}</option>
+                                {% else %}
+                                <option value="{{item[0]}}">{{ item[1] }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form_data['part_of_speech'] == 'noun' %}
+                        <div class="form-group" id="formFormGroup">
+                            {% else %}
+                            <div class="form-group" style="display: none" id="formFormGroup">
+                                {% endif %}
+                                <label for="form">Число</label>
+                                <select class="form-control form-control-sm" name="form" id="form">
+                                    {% for item in forms.items() %}
+                                    {% if item[0]==form_data['form'] %}
+                                    <option value="{{item[0]}}" selected>{{ item[1] }}</option>
+                                    {% else %}
+                                    <option value="{{item[0]}}">{{ item[1] }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <input type="hidden" id="_id" name="_id">
+                            <input type="submit" name="saveButton" id="saveButton" class="btn btn-sm btn-dark mb-2"
+                                   value="Добавить">
+                            <input type="submit" name="deleteButton" id="deleteButton" class="btn btn-sm btn-dark mb-2"
+                                   value="Удалить" style="display: none">
+                            <input type="reset" name="resetButton" id="resetButton"
+                                   class="btn btn-sm btn-outline-dark mb-2"
+                                   value="Отмена" style="display: none" onclick="resetForm()">
                 </form>
             </div>
         </div>
@@ -79,7 +102,8 @@
 </div>
 
 <div class="col-md-8">
-    <table class="table table-sm table-hover table-bordered">
+    <input type="text" id="searchInput" class="form-control form-control-sm mb-3" placeholder="Поиск...">
+    <table class="table table-sm table-hover table-bordered" id="wordsTable">
         <thead>
         <tr>
             <th scope="col" width="2%">№</th>
@@ -183,6 +207,16 @@ function resetForm(val) {
     genderFormGroup.style.display = "none";
     formFormGroup.style.display = "none";
 }
+
+$(document).ready(function(){
+  $("#searchInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#wordsTable tr:not(:first)").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
 
 </script>
 
