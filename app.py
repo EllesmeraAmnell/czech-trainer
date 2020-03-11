@@ -22,7 +22,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/quiz', methods=['POST', 'GET'])
+@app.route('/quiz', methods=['GET'])
 def quiz():
     words = get_random_words(4)
     random_option = Random().choice(words)
@@ -31,29 +31,31 @@ def quiz():
     return render_template('quiz.html', question=question, answer=answer, options=options)
 
 
-@app.route('/edit_db', methods=['GET'])
-def show_db():
+@app.route('/words', methods=['GET'])
+def words():
     words_list = get_words_list()
-    return render_template('show_db.html', words_list=words_list, genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH,
+    return render_template('words.html', words_list=words_list, genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH,
                            forms=FORMS)
 
 
 @app.route('/edit_db_super_secret_pf8wls', methods=['POST', 'GET'])
 def edit_db():
     result = None
+    form_data = None
     if request.method == 'POST':
         word = Word(request.form)
         try:
             if 'saveButton' in request.form:
                 save_word(word)
                 result = 'Слово успешно сохранено!'
+                form_data = request.form
             if 'deleteButton' in request.form and delete_word(word):
                 result = 'Слово успешно удалено!'
         except Exception as e:
             result = 'Ошибка!'
             logger.error(str(e))
     words_list = get_words_list()
-    return render_template('edit_db.html', result=result, words_list=words_list,
+    return render_template('edit_db.html', result=result, form_data=form_data, words_list=words_list,
                            genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH, forms=FORMS)
 
 
