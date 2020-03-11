@@ -23,7 +23,8 @@ def save_word(word):
 
 def delete_word(word):
     logger.info(f'Deleting word: {word}')
-    collection.delete_one({'_id': word._id})
+    res = collection.delete_one({'_id': word._id})
+    return res.deleted_count if res else None
 
 
 def get_words_list(limit=None, skip=None):
