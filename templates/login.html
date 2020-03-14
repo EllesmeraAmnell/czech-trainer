@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+<!---------- Content ----------->
+{% block content %}
+<div class="col-sm-6 offset-sm-3">
+    <div class="row">
+        <div class="col">
+            <div class="container rounded-lg p-3">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger fade rounded-lg show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ messages[0] }}
+                </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST">
+                    <div class="md-form form-group bmd-form-group">
+                        <label for="login" class="bmd-label-static">Логин</label>
+                        <input required class="form-control" name='login' placeholder="Логин" type="text"
+                               value="{{ form_data }}">
+                    </div>
+                    <div class="md-form form-group bmd-form-group">
+                        <label for="password" class="bmd-label-static">Пароль</label>
+                        <input required class="form-control" name='password' placeholder="Пароль" type="password">
+                    </div>
+                    <button type="submit" class="btn btn-raised btn-dark mr-2">Войти</button>
+                    <span>Нет аккаунта? <a href="/signup">Зарегистрироваться</a></span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

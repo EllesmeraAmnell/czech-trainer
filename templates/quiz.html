@@ -3,40 +3,36 @@
 <!---------- Navigation ----------->
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link" href="/index">Главная</a>
+    <a class="nav-link active" href="{{ url_for('quiz') }}">Упражнения</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/quiz">Упражнения</a>
+    <a class="nav-link" href="{{ url_for('words') }}">Словарь</a>
 </li>
+{% if current_user.role.value > 0 %}
 <li class="nav-item">
-    <a class="nav-link" href="/words">Словарь</a>
+    <a class="nav-link" href="{{ url_for('edit_words') }}">Редактирование базы слов</a>
 </li>
+{% endif %}
 {% endblock %}
 
 <!---------- Content ----------->
 {% block content %}
 <div class="col-sm-6 offset-sm-3">
-    <div class="row-fluid">
-        <div class="col container border rounded py-2">
-            <p>Выберите правильный перевод слова <b>{{ question }}</b></p>
-            <div class="list-group ">
-                {% for option in options %}
-                <button type="button" class="list-group-item list-group-item-action" onclick="checkAnswer(this)"
-                        value="{{option}}" name="option">
-                    {{option}}
-                </button>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <div class="row-fluid my-3">
-        <div class="col container rounded py-2" id="next_word" style="display: none">
-            <p><a role="button" class="btn btn-sm btn-outline-secondary" href="/quiz">Следующее слово</a></p>
+    <div class="container border rounded-lg my-2 p-3">
+        <p>Выберите правильный перевод слова <b class="text-capitalize">{{ question }}</b></p>
+        <div class="list-group">
+            {% for option in options %}
+            <button type="button" class="list-group-item list-group-item-action" onclick="checkAnswer(this)"
+                    value="{{option}}" name="option">
+                <span class="text-capitalize">{{option}}</span>
+            </button>
+            {% endfor %}
         </div>
 
+        <div class="mt-2" id="next_word" style="display: none">
+            <a role="button" class="btn btn-sm btn-outline-secondary" href="{{ url_for('quiz') }}">Следующее слово</a>
+        </div>
     </div>
-
 </div>
 
 {% endblock %}
@@ -68,7 +64,6 @@ function checkAnswer(val) {
             options[i].classList.add('list-group-item-success');
 
 }
-
 
 </script>
 

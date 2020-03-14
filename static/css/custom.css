@@ -1,0 +1,45 @@
+body {
+    background-image: url('/img/prague.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+.navbar:not(.top-nav-collapse) {
+  box-shadow: none;
+  background: transparent !important;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.jumbotron {
+    background-color: rgba(255, 255, 255, 0.95)
+}
+
+.table-wrapper{
+    overflow: auto;
+    font-size: 13px;
+}
+
+@-webkit-keyframes autofill {
+    to {
+        background: transparent;
+    }
+}
+
+@keyframes autofill {
+    to {
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
