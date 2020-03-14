@@ -3,22 +3,22 @@
 <!---------- Navigation ----------->
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link" href="/index">Home</a>
+    <a class="nav-link" href="/index">Главная</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/quiz">Quiz</a>
+    <a class="nav-link active" href="/quiz">Упражнения</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/edit_db">Edit words</a>
+    <a class="nav-link" href="/words">Словарь</a>
 </li>
 {% endblock %}
 
 <!---------- Content ----------->
 {% block content %}
-<div class="col-6 offset-3">
+<div class="col-sm-6 offset-sm-3">
     <div class="row-fluid">
         <div class="col container border rounded py-2">
-            <p>Выберите правильный перевод слова {{ question }}</p>
+            <p>Выберите правильный перевод слова <b>{{ question }}</b></p>
             <div class="list-group ">
                 {% for option in options %}
                 <button type="button" class="list-group-item list-group-item-action" onclick="checkAnswer(this)"
@@ -32,7 +32,7 @@
 
     <div class="row-fluid my-3">
         <div class="col container rounded py-2" id="next_word" style="display: none">
-            <p><a role="button" class="btn btn-sm btn-outline-primary" href="/quiz">Следующее слово</a></p>
+            <p><a role="button" class="btn btn-sm btn-outline-secondary" href="/quiz">Следующее слово</a></p>
         </div>
 
     </div>

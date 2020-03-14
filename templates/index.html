@@ -3,19 +3,19 @@
 <!---------- Navigation ----------->
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link active" href="/index">Home</a>
+    <a class="nav-link active" href="/index">Главная</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/quiz">Quiz</a>
+    <a class="nav-link" href="/quiz">Упражнения</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/edit_db">Edit words</a>
+    <a class="nav-link" href="/words">Словарь</a>
 </li>
 {% endblock %}
 
 <!---------- Content ----------->
 {% block content %}
-<div class="col-4">
+<div class="col-sm-6 offset-sm-3">
     <div class="row-fluid">
         <div class="col">
             <div class="container border rounded py-2">
@@ -31,24 +31,6 @@
                     <button type="submit" class="btn btn-dark">Войти</button>
                 </form>
             </div>
-        </div>
-    </div>
-
-    {% if result %}
-    <div class="row-fluid my-3">
-        <div class="col">
-            <div class="container border rounded py-2">
-               {{ result }}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-</div>
-
-<div class="col-8">
-    <div class="row-fluid">
-        <div class="col">
         </div>
     </div>
 </div>

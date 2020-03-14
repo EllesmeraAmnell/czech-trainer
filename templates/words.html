@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+<!---------- Navigation ----------->
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link" href="/index">Главная</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/quiz">Упражнения</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" href="/words">Словарь</a>
+</li>
+{% endblock %}
+
+<!---------- Content ----------->
+{% block content %}
+
+<div class="col-md">
+    <input type="text" id="searchInput" class="form-control form-control-sm mb-3" placeholder="Поиск...">
+    <font size="2">
+    <table class="table table-sm table-hover table-bordered" id="wordsTable">
+        <thead>
+        <tr>
+            <th scope="col" width="2%">№</th>
+            <th scope="col" width="20%">Русское слово</th>
+            <th scope="col" width="20%">Чешское слово</th>
+            <th scope="col" width="20%">Часть речи</th>
+            <th scope="col" width="19%">Род</th>
+            <th scope="col" width="19%">Число</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for word in words_list %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ word.rus }}</td>
+            <td>{{ word.cz }}</td>
+            <td>{{ parts_of_speech[word.part_of_speech] }}</td>
+            <td>{{ genders[word.gender] }}</td>
+            <td>{{ forms[word.form] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </font>
+</div>
+
+{% endblock %}
+
+
+<!---------- Script ----------->
+
+{% block script %}
+
+<script>
+
+$(document).ready(function(){
+  $("#searchInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#wordsTable tr:not(:first)").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+</script>
+
+{%endblock%}
