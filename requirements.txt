@@ -1,3 +1,5 @@
 bson
 Flask
+flask_login
 pymongo
+requests

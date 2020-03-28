@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+<!---------- Content ----------->
+{% block content %}
+<div class="col-sm-6 offset-sm-3">
+    <div class="row">
+        <div class="col">
+            <div class="container rounded-lg p-3">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-danger fade rounded-lg show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="md-form form-group col">
+                            <label for="name">Имя</label>
+                            <input required class="form-control" name='name' placeholder="Иван" type="text"
+                                   value="{{ form_data['name'] }}">
+                        </div>
+                        <div class="md-form form-group col">
+                            <label for="surname">Фамилия</label>
+                            <input required class="form-control" name='surname' placeholder="Иванов" type="text"
+                                   value="{{ form_data['surname'] }}">
+                        </div>
+                    </div>
+                    <div class="md-form form-group">
+                        <label for="login">Логин</label>
+                        <input required class="form-control" name='login' placeholder="IvanIvanov" type="text"
+                               value="{{ form_data['login'] }}">
+                    </div>
+                    <div class="md-form form-group">
+                        <label for="email">E-mail</label>
+                        <input required class="form-control" name='email' placeholder="email@example.com" type="email"
+                            value="{{ form_data['email'] }}">
+                    </div>
+                    <div class="form-row">
+                        <div class="md-form form-group col">
+                            <label for="password">Пароль</label>
+                            <input required class="form-control" name='password' placeholder="Пароль" type="password">
+                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                Пароль должен содержать не менее 8 символов.
+                            </small>
+                        </div>
+                        <div class="md-form form-group col">
+                            <label for="confirm">Повторите пароль</label>
+                            <input required class="form-control" name='confirm' placeholder="Повторите пароль"
+                                   type="password">
+                        </div>
+                    </div>
+                    <div class="g-recaptcha mb-3" data-sitekey="{{ google_client_key }}"></div>
+                    <button type="submit" class="btn btn-raised btn-dark mr-2">Зарегистрироваться</button>
+                    <span>Уже зарегестрированы? <a href="/login">Войти</a></span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://www.google.com/recaptcha/api.js?hl=ru" async defer></script>
+{% endblock %}
