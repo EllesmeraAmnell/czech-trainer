@@ -1,8 +1,10 @@
 # Czech Trainer
+
 ##Description
 Web application helps to learn Czech language.
 
 ## How to
+
 ### Deploy
 ```
 git pull
