@@ -20,18 +20,18 @@
 <div class="col-md-4 mb-3">
     <div class="container border rounded-lg pt-2">
         <form method="POST">
-            <div class="form-group">
-                <label for="rus">Слово на русском</label>
+            <div class="form-group bmd-form-group">
+                <label for="rus" class="bmd-label-static">Слово на русском</label>
                 <input required class="form-control form-control-sm" name='rus' id='rus'
                        placeholder="Русское слово">
             </div>
-            <div class="form-group">
-                <label for="cz">Слово на чешском</label>
+            <div class="form-group bmd-form-group">
+                <label for="cz" class="bmd-label-static">Слово на чешском</label>
                 <input required class="form-control form-control-sm" name='cz' id='cz'
                        placeholder="Чешское слово">
             </div>
-            <div class="form-group">
-                <label for="part_of_speech">Часть речи</label>
+            <div class="form-group bmd-form-group">
+                <label for="part_of_speech" class="bmd-label-static">Часть речи</label>
                 <select required class="form-control form-control-sm" name='part_of_speech' id='part_of_speech'
                         onchange="showNounFields(this.value)">
                     {% for item in parts_of_speech.items() %}
@@ -45,11 +45,11 @@
                 </select>
             </div>
             {% if form_data['part_of_speech'] == 'noun' %}
-            <div class="form-group" id="genderFormGroup">
+            <div class="form-group bmd-form-group" id="genderFormGroup">
                 {% else %}
-                <div class="form-group" style="display: none" id="genderFormGroup">
+                <div class="form-group bmd-form-group" style="display: none" id="genderFormGroup">
                     {% endif %}
-                    <label for="gender">Род</label>
+                    <label for="gender" class="bmd-label-static">Род</label>
                     <select class="form-control form-control-sm" name="gender" id="gender">
                         {% for item in genders.items() %}
                         {% if item[0]==form_data['gender'] %}
@@ -61,11 +61,11 @@
                     </select>
                 </div>
                 {% if form_data['part_of_speech'] == 'noun' %}
-                <div class="form-group" id="formFormGroup">
+                <div class="form-group bmd-form-group" id="formFormGroup">
                     {% else %}
-                    <div class="form-group" style="display: none" id="formFormGroup">
+                    <div class="form-group bmd-form-group" style="display: none" id="formFormGroup">
                         {% endif %}
-                        <label for="form">Число</label>
+                        <label for="form" class="bmd-label-static">Число</label>
                         <select class="form-control form-control-sm" name="form" id="form">
                             {% for item in forms.items() %}
                             {% if item[0]==form_data['form'] %}

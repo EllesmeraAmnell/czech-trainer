@@ -4,6 +4,7 @@ body {
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
+    background-color: --primary;
 }
 
 .navbar:not(.top-nav-collapse) {
@@ -22,6 +23,10 @@ body {
 .table-wrapper{
     overflow: auto;
     font-size: 13px;
+}
+
+.container-wrapper{
+    overflow: auto;
 }
 
 @-webkit-keyframes autofill {

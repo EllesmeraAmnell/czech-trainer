@@ -6,6 +6,7 @@ from bson import ObjectId
 from enum import Enum
 from flask import json, current_app
 from flask_login import UserMixin
+from hashlib import md5
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -27,10 +28,10 @@ class UserRoles(Enum):
 class User(UserMixin):
     def __init__(self, dictionary):
         self.id = ObjectId(dictionary.get('_id')) if '_id' in dictionary else None
-        self.name = dictionary.get('name')
-        self.surname = dictionary.get('surname')
-        self.login = dictionary.get('login')
-        self.email = dictionary.get('email')
+        self.name = dictionary.get('name').lower().capitalize()
+        self.surname = dictionary.get('surname').lower().capitalize()
+        self.login = dictionary.get('login').lower()
+        self.email = dictionary.get('email').lower()
         self.password = dictionary.get('password')
         self.role = UserRoles(dictionary.get('role')) if 'role' in dictionary else UserRoles.USER
 
@@ -60,8 +61,23 @@ class User(UserMixin):
             res['_id'] = self.id
         return res
 
+    def get_role_description(self):
+        if self.role == UserRoles.USER:
+            return 'Пользователь'
+        if self.role == UserRoles.MODERATOR:
+            return 'Модератор'
+        if self.role == UserRoles.ADMIN:
+            return 'Администратор'
+        return ''
+
+    def get_avatar(self, size=150):
+        """Docs: https://en.gravatar.com/site/implement/images/"""
+        digest = md5(self.email.encode('UTF-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=mp&s={}'.format(digest, size)
+
 
 def get_user(value, param='_id'):
+    value = value.lower() if param != '_id' else value
     res = collection.find_one({param: value})
     return User(res) if res else None
 

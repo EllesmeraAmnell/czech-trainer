@@ -16,38 +16,38 @@
                 {% endfor %}
                 <form method="POST">
                     <div class="form-row">
-                        <div class="md-form form-group col">
-                            <label for="name">Имя</label>
-                            <input required class="form-control" name='name' placeholder="Иван" type="text"
+                        <div class="md-form form-group bmd-form-group col">
+                            <label for="name" class="bmd-label-static">Имя</label>
+                            <input required class="form-control" id="name" name='name' placeholder="Иван" type="text"
                                    value="{{ form_data['name'] }}">
                         </div>
-                        <div class="md-form form-group col">
-                            <label for="surname">Фамилия</label>
-                            <input required class="form-control" name='surname' placeholder="Иванов" type="text"
+                        <div class="md-form form-group bmd-form-group col">
+                            <label for="surname" class="bmd-label-static">Фамилия</label>
+                            <input required class="form-control" id="surname" name='surname' placeholder="Иванов" type="text"
                                    value="{{ form_data['surname'] }}">
                         </div>
                     </div>
-                    <div class="md-form form-group">
-                        <label for="login">Логин</label>
-                        <input required class="form-control" name='login' placeholder="IvanIvanov" type="text"
+                    <div class="md-form form-group bmd-form-group">
+                        <label for="login" class="bmd-label-static">Логин</label>
+                        <input required class="form-control" id="login" name='login' placeholder="IvanIvanov" type="text"
                                value="{{ form_data['login'] }}">
                     </div>
-                    <div class="md-form form-group">
-                        <label for="email">E-mail</label>
-                        <input required class="form-control" name='email' placeholder="email@example.com" type="email"
+                    <div class="md-form form-group bmd-form-group">
+                        <label for="email" class="bmd-label-static">E-mail</label>
+                        <input required class="form-control" id="email" name='email' placeholder="email@example.com" type="email"
                             value="{{ form_data['email'] }}">
                     </div>
                     <div class="form-row">
-                        <div class="md-form form-group col">
-                            <label for="password">Пароль</label>
-                            <input required class="form-control" name='password' placeholder="Пароль" type="password">
+                        <div class="md-form form-group bmd-form-group col">
+                            <label for="password" class="bmd-label-static">Пароль</label>
+                            <input required class="form-control" id="password" name='password' placeholder="Пароль" type="password">
                             <small id="passwordHelpBlock" class="form-text text-muted">
                                 Пароль должен содержать не менее 8 символов.
                             </small>
                         </div>
-                        <div class="md-form form-group col">
-                            <label for="confirm">Повторите пароль</label>
-                            <input required class="form-control" name='confirm' placeholder="Повторите пароль"
+                        <div class="md-form form-group bmd-form-group col">
+                            <label for="confirm" class="bmd-label-static">Повторите пароль</label>
+                            <input required class="form-control" id="confirm" name='confirm' placeholder="Повторите пароль"
                                    type="password">
                         </div>
                     </div>
