@@ -1,6 +1,6 @@
 # Czech Trainer
 
-##Description
+## Description
 Web application helps to learn Czech language.
 
 ## How to
