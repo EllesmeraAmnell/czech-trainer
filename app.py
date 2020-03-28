@@ -1,19 +1,33 @@
 import logging
 
+from bson import ObjectId
+from core.user import get_user, User, add_new_user, validate_registration_form, ValidationResults, UserRoles
 from core.word import Word
 from core.utils import save_word, get_words_list, delete_word, get_random_words
 from core.const import GENDERS, PARTS_OF_SPEECH, FORMS
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, flash, redirect, url_for, session, abort
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from random import Random
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
+app.config.from_json('config.json')
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(".", 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.route('/img/prague.jpg')
+def jpg():
+    return send_from_directory("static", 'img/prague.jpg')
 
 
 @app.route('/', methods=['GET'])
@@ -22,7 +36,14 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/profile', methods=['GET'])
+@login_required
+def profile():
+    return render_template('profile.html')
+
+
 @app.route('/quiz', methods=['GET'])
+@login_required
 def quiz():
     words = get_random_words(4)
     random_option = Random().choice(words)
@@ -32,31 +53,100 @@ def quiz():
 
 
 @app.route('/words', methods=['GET'])
+@login_required
 def words():
     words_list = get_words_list()
     return render_template('words.html', words_list=words_list, genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH,
                            forms=FORMS)
 
 
-@app.route('/edit_db_super_secret_pf8wls', methods=['POST', 'GET'])
-def edit_db():
-    result = None
+@app.route('/edit_words', methods=['POST', 'GET'])
+@login_required
+def edit_words():
+    if current_user.role.value < UserRoles.MODERATOR.value:
+        abort(403, ValidationResults.WRONG_ROLE.value)
     form_data = None
     if request.method == 'POST':
         word = Word(request.form)
         try:
             if 'saveButton' in request.form:
                 save_word(word)
-                result = 'Слово успешно сохранено!'
+                flash('Слово успешно сохранено!', category='success')
                 form_data = request.form
             if 'deleteButton' in request.form and delete_word(word):
-                result = 'Слово успешно удалено!'
+                flash('Слово успешно удалено!', category='success')
         except Exception as e:
-            result = 'Ошибка!'
+            flash('Ошибка!', category='error')
             logger.error(str(e))
     words_list = get_words_list()
-    return render_template('edit_db.html', result=result, form_data=form_data, words_list=words_list,
-                           genders=GENDERS, parts_of_speech=PARTS_OF_SPEECH, forms=FORMS)
+    return render_template('edit_words.html', form_data=form_data, words_list=words_list, genders=GENDERS,
+                           parts_of_speech=PARTS_OF_SPEECH, forms=FORMS)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    login=''
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        usr = get_user(login, 'login') or get_user(login, 'email')
+        if usr and usr.check_password(password=password):
+            login_user(usr)
+            next_page = session.get('next_page', '/')
+            session['next_page'] = ''
+            return redirect(next_page or url_for('words'))
+        flash(ValidationResults.WRONG_CREDS.value)
+    return render_template('login.html', form_data=login)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form_data = {}
+    if request.method == 'POST':
+        validation_result = validate_registration_form(request.form.to_dict())
+        if ValidationResults.SUCCESS in validation_result:
+            user = User(request.form)
+            add_new_user(user)
+            login_user(user)
+            next_page = session.get('next_page', '/')
+            session['next_page'] = ''
+            return redirect(next_page or url_for('index'))
+        for message in validation_result:
+            flash(message.value)
+        form_data = request.form
+    return render_template('signup.html', google_client_key=app.config.get('GOOGLE_CLIENT_KEY'), form_data=form_data)
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if not current_user.is_authenticated:
+        return redirect(url_for('index'))
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id:
+        return get_user(ObjectId(user_id))
+    return None
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash(ValidationResults.NOT_AUTHORIZED.value)
+    session['next_page'] = request.path
+    return redirect(url_for('login'))
+
+
+@app.errorhandler(403)
+def error_403(error_info):
+    return render_template('error_page.html', title='403', error_info=error_info, error_code=' 403',
+                           error_text='недостаточно прав', content=error_info), 403
 
 
 @app.errorhandler(404)

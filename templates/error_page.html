@@ -3,14 +3,16 @@
 <!---------- Navigation ----------->
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link" href="/index">Главная</a>
+    <a class="nav-link" href="{{ url_for('quiz') }}">Упражнения</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/quiz">Упражнения</a>
+    <a class="nav-link" href="{{ url_for('words') }}">Словарь</a>
 </li>
+{% if current_user.role.value > 0 %}
 <li class="nav-item">
-    <a class="nav-link" href="/words">Словарь</a>
+    <a class="nav-link" href="{{ url_for('edit_words') }}">Редактирование базы слов</a>
 </li>
+{% endif %}
 {% endblock %}
 
 <!---------- Content ----------->
@@ -19,6 +21,9 @@
     <div class="jumbotron">
         <h3>Ошибка{{error_code}}: {{error_text}}</h3>
         <hr class="my-3">
+        {% if content %}
+        <p>{{ content }}</p>
+        {% else %}
         <p>Что-то пошло не так :с</p>
         <p>Но Вы всегда можете <a href="/index">вернуться</a> на главную.</p>
         <br>
@@ -33,6 +38,7 @@
                 {{ error_info }}
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 

@@ -93,7 +93,6 @@ EST_EZT_ENDINGS = {
 }
 
 RUS_WORD_RE = r'\A[а-яА-ЯёЁ\s]+\Z'
-
 CZECH_WORD_RE = r'\A[a-zA-ZéěýúůíóářťšďžćčňĚÝÚŮÍÓÁŘŤŠĎŽĆČŇ\s]+\Z'
 
 CZECH_LONG_VOWEL = "éýúůíóá"

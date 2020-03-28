@@ -1,11 +1,7 @@
 from bson.objectid import ObjectId
-
-
-from core.const import Time, VerbType, ConjugationType, CZECH_LONG_VOWEL, OVAT_ENDINGS, OUT_ENDINGS, AT_ENDINGS, \
+from core.const import Time, VerbType, CZECH_LONG_VOWEL, OVAT_ENDINGS, OUT_ENDINGS, AT_ENDINGS, \
     IT_ET_ENDINGS, EST_EZT_ENDINGS, LONG_VOWEL_REPLACEMENT
 
-
-# from core.utils import is_exception
 
 class Word:
     def __init__(self, dictionary):
@@ -16,7 +12,7 @@ class Word:
         self.gender = dictionary['gender'] if self.part_of_speech == 'noun' else None
         self.form = dictionary['form'] if self.part_of_speech == 'noun' else None
 
-    def __str__(self):
+    def __repr__(self):
         return f'{self._id}, {self.rus}, {self.cz}, {self.part_of_speech}, {self.gender}, {self.form}'
 
     def get_dict(self):
@@ -31,8 +27,9 @@ class Word:
             res['_id'] = self._id
         return res
 
-    def _normalize_string(self, str_to_normalize):
-        return str_to_normalize.strip()[0].upper() + str_to_normalize.strip()[1:]
+    @staticmethod
+    def _normalize_string(string):
+        return string.lower().capitalize()
 
 
 class Verb(Word):
@@ -81,7 +78,7 @@ class Verb(Word):
             return self.correct_est_ezt(conjugation_type)
         if word_type == VerbType.SHORT:
             return self.correct_short(conjugation_type)
-        raise Exception("Unknow type of verb!")
+        raise Exception("Unknown type of verb!")
 
     # TODO: дополнить разделением на литературную и разговорную версии
     def correct_ovat(self, conjugation_type):
