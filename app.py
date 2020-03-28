@@ -1,12 +1,15 @@
 import logging
 
 from bson import ObjectId
-from core.user import get_user, User, add_new_user, validate_registration_form, ValidationResults, UserRoles
+from core.user import get_user, User, add_new_user, validate_registration_form, ValidationResults, UserRoles, \
+    generate_confirmation_mail, update_user
 from core.word import Word
 from core.utils import save_word, get_words_list, delete_word, get_random_words
 from core.const import GENDERS, PARTS_OF_SPEECH, FORMS
 from flask import Flask, render_template, request, send_from_directory, flash, redirect, url_for, session, abort
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from flask_mail import Mail
+from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 from random import Random
 
 logging.basicConfig(level=logging.DEBUG)
@@ -18,6 +21,10 @@ app.config.from_json('config.json')
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+mail = Mail()
+mail.init_app(app)
+s = URLSafeTimedSerializer(app.config.get('MAIL_SECRET'))
 
 
 @app.route('/favicon.ico')
@@ -87,16 +94,19 @@ def edit_words():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    login=''
+    login = ''
     if request.method == 'POST':
         login = request.form.get('login')
         password = request.form.get('password')
-        usr = get_user(login, 'login') or get_user(login, 'email')
-        if usr and usr.check_password(password=password):
-            login_user(usr)
+        user = get_user(login, 'login') or get_user(login, 'email')
+        if user and user.confirmed and user.check_password(password=password):
+            login_user(user)
             next_page = session.get('next_page', '/')
             session['next_page'] = ''
             return redirect(next_page or url_for('words'))
+        if not user.confirmed:
+            session['email_to_confirm'] = user.email
+            return redirect(url_for('finish_signup'))
         flash(ValidationResults.WRONG_CREDS.value)
     return render_template('login.html', form_data=login)
 
@@ -110,15 +120,43 @@ def signup():
         validation_result = validate_registration_form(request.form.to_dict())
         if ValidationResults.SUCCESS in validation_result:
             user = User(request.form)
+            token = s.dumps(user.email, salt=app.config.get('MAIL_SALT'))
+            msg = generate_confirmation_mail(user.email, token)
+            mail.send(msg)
             add_new_user(user)
-            login_user(user)
-            next_page = session.get('next_page', '/')
-            session['next_page'] = ''
-            return redirect(next_page or url_for('index'))
+            session['email_to_confirm'] = user.email
+            return redirect(url_for('finish_signup'))
         for message in validation_result:
             flash(message.value)
         form_data = request.form
     return render_template('signup.html', google_client_key=app.config.get('GOOGLE_CLIENT_KEY'), form_data=form_data)
+
+
+@app.route('/finish_signup', methods=['GET', 'POST'])
+def finish_signup():
+    if current_user.is_authenticated and not session.get('email_to_confirm'):
+        return redirect(url_for('index'))
+    if request.method == 'POST' and session.get('email_to_confirm'):
+        token = s.dumps(session.get('email_to_confirm'), salt=app.config.get('MAIL_SALT'))
+        msg = generate_confirmation_mail(session.get('email_to_confirm'), token)
+        session['email_to_confirm'] = ''
+        mail.send(msg)
+    return render_template('finish_signup.html', resent_available=True if session.get('email_to_confirm') else False)
+
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = s.loads(token, salt=app.config.get('MAIL_SALT'), max_age=3600)
+        session['email_to_confirm'] = ''
+        user = get_user(email, 'email')
+        user.confirmed = True
+        update_user(user)
+        flash('Адрес электронной почты подтверждён успешно!')
+        login_user(user)
+        return redirect(url_for('login'))
+    except SignatureExpired:
+        abort(401, 'Невозможно заершить регистрацию, так как ссылка устарела.')
 
 
 @app.route('/logout', methods=['GET', 'POST'])

@@ -1,5 +1,7 @@
 bson
 Flask
 flask_login
+flask_mail
+itsdangerous
 pymongo
 requests

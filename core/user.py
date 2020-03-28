@@ -4,8 +4,9 @@ import requests
 
 from bson import ObjectId
 from enum import Enum
-from flask import json, current_app
+from flask import json, current_app, url_for
 from flask_login import UserMixin
+from flask_mail import Message
 from hashlib import md5
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -34,6 +35,7 @@ class User(UserMixin):
         self.email = dictionary.get('email').lower()
         self.password = dictionary.get('password')
         self.role = UserRoles(dictionary.get('role')) if 'role' in dictionary else UserRoles.USER
+        self.confirmed = dictionary.get('confirmed')
 
     def protect_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -55,7 +57,8 @@ class User(UserMixin):
             'password': self.password,
             'name': self.name,
             'surname': self.surname,
-            'role': self.role.value
+            'role': self.role.value,
+            'confirmed': self.confirmed
         }
         if self.id:
             res['_id'] = self.id
@@ -80,6 +83,10 @@ def get_user(value, param='_id'):
     value = value.lower() if param != '_id' else value
     res = collection.find_one({param: value})
     return User(res) if res else None
+
+
+def update_user(user):
+    collection.update_one({'_id': user.id}, {'$set': user.get_dict()})
 
 
 def add_new_user(user):
@@ -155,3 +162,13 @@ def validate_registration_form(form):
     form.pop('password', None)
     form.pop('confirm', None)
     return flash_messages if flash_messages else [ValidationResults.SUCCESS]
+
+
+def generate_confirmation_mail(email, token):
+    msg = Message('Czech Trainer: подтверждение регистрации', sender='Czech Trainer', recipients=[email])
+    link = url_for('confirm_email', token=token, _external=True)
+    msg.body = 'Вы получили это письмо, так как данный адрес электронной почты был указан при регистрации на ' \
+               'сайте Czech Trainer (http://194.67.90.186/).\nЕсли это были не Вы, проигнорируйте это письмо.\n\n' \
+               'Для завершения регистрации перейдите по адресу ниже (ссылка действительна в течение часа):\n' \
+               '{} \n\n'.format(link)
+    return msg

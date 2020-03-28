@@ -1,5 +1,13 @@
 {
-    "SECRET_KEY": "\\xc1\\xcbi}\\xb9R\\x0b!\\r\\xcb\\xb5D\\x05\\xee\\xbd\\x1c\\x1c\\x91\\xaaq\\xab;",
-    "GOOGLE_CLIENT_KEY": "6LcHnOQUAAAAAG13yNm2LCldJ-0blZc7tgIbgi0r",
-    "GOOGLE_SERVER_KEY": "6LcHnOQUAAAAAEtgUGLTD88gkxNWnirtGijVYmnr"
+  "SECRET_KEY": "\\xc1\\xcbi}\\xb9R\\x0b!\\r\\xcb\\xb5D\\x05\\xee\\xbd\\x1c\\x1c\\x91\\xaaq\\xab;",
+  "GOOGLE_CLIENT_KEY": "6LcHnOQUAAAAAG13yNm2LCldJ-0blZc7tgIbgi0r",
+  "GOOGLE_SERVER_KEY": "6LcHnOQUAAAAAEtgUGLTD88gkxNWnirtGijVYmnr",
+  "MAIL_SERVER": "smtp.gmail.com",
+  "MAIL_USERNAME": "trainerczech@gmail.com",
+  "MAIL_PASSWORD": "xticrfzafynfpbz",
+  "MAIL_PORT": 465,
+  "MAIL_USE_SSL": true,
+  "MAIL_USE_TLS": false,
+  "MAIL_SECRET": "z\\x98\\xf4\\x80d\\x8c`\\xe7Iy\\x01x\\x94\\xdcC\\xf8\\xa8\\x07\\x03\\xeeN\\xd8\\x1f\\x97",
+  "MAIL_SALT": "15ea1eed8c2547761b23828398949d8c8be55704aad7dd14"
 }

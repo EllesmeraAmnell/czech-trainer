@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+<!---------- Content ----------->
+{% block content %}
+<div class="col-sm-8 offset-sm-2">
+    <div class="jumbotron">
+        <h1 class="display-4">Почти готово!</h1>
+        <p class="lead">Для завершения регистрации необходимо подтвердить адрес электронной почты</p>
+        <hr class="my-4">
+        <p>
+            На указанный Вами адрес было отправлено письмо с инструкциями по завершению регистрации.
+            Обращаем Ваше внимание на то, что ссылка действительна в течение часа.
+        </p>
+        {% if resent_available %}
+        <br>
+        <form method="post">
+            <p>Если письмо не пришло, мы можем <button type="submit" class="btn btn-outline-primary btn-sm mx-0">отправить</button> его ещё раз.</p>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
