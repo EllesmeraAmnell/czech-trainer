@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-glyphicons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
+
+    <!-- Block HEADER -->
+    {% block header %}{% endblock %}
+
+    <title>Czech Trainer</title>
+</head>
+<body>
+<div class="container-fluid ">
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <nav class="navbar navbar-light navbar-expand-md justify-content-between">
+                <a class="navbar-brand" href="{{ url_for('web.index') }}">Czech Trainer</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    {% if not current_user.is_anonymous %}
+                    <ul class="navbar-nav">
+                        <!-- Block NAVIGATION -->
+                        {% block navigation %}{% endblock %}
+                    </ul>
+                    {% endif %}
+                    <ul class="navbar-nav ml-auto nav-flex-icons">
+                        {% if current_user.is_anonymous %}
+                        <li class="nav-item"><a class="nav-link" href="/login">Вход</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup">Регистрация</a></li>
+                        {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ current_user.get_avatar(25) }}" class="rounded-circle mr-1">
+                                {{ current_user }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/profile"><span class="glyphicon glyphicon-user"></span> Профиль</a>
+                                <a class="dropdown-item" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Выход</a>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row form-group">
+        <!-- Block CONTENT -->
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-material-design.min.js') }}"></script>
+
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign({ripples: false}); });</script>
+
+<!-- Block SCRIPT -->
+{% block script %}{% endblock %}
+
+</body>
+</html>
