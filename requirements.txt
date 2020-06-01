@@ -2,6 +2,8 @@ bson
 Flask
 flask_login
 flask_mail
+flask_restplus
+gunicorn
 itsdangerous
 pymongo
 requests

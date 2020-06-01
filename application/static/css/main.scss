@@ -1,0 +1,51 @@
+$theme-colors: (
+  "primary": #63708a,
+  "secondary": #a0381d,
+  "success": rgb(92, 146, 92),
+  "danger": #6b1f1f,
+  "warning": #ae6e4a,
+  "info": #7f8daf,
+  "light": #d4d6d8,
+  "dark": #3b3033
+);
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Open Sans',
+'Montserrat', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+sans-serif;
+
+$paragraph-margin-bottom: 0.4rem;
+
+$body-color: map-get($theme-colors, "dark");
+
+$navbar-light-color:                rgba(map-get($theme-colors, "dark"), .7);
+$navbar-light-hover-color:          rgba(map-get($theme-colors, "dark"), .9);
+$navbar-light-active-color:         map-get($theme-colors, "dark");
+$navbar-light-disabled-color:       rgba(map-get($theme-colors, "dark"), .4);
+$navbar-light-toggler-border-color: rgba(map-get($theme-colors, "dark"), .2);
+$bmd-navbar-link-font-size: 1.0rem !default; // 16
+
+$border-radius:               .25rem !default;
+$border-radius-lg:            .3rem !default;
+$border-radius-sm:            .2rem !default;
+
+$dropdown-min-width:                10rem !default;
+$dropdown-padding-y:                .5rem !default;
+$dropdown-spacer:                   .125rem !default;
+$dropdown-color:                    rgba(map-get($theme-colors, "dark"), .7);
+$dropdown-bg:                       rgba(#fff, .9);
+$dropdown-border-color:             rgba(map-get($theme-colors, "dark"), .15) !default;
+$dropdown-border-radius:            $border-radius-lg;
+$dropdown-box-shadow:               None;
+$dropdown-link-color:               rgba(map-get($theme-colors, "dark"), .8);
+$dropdown-link-hover-color:         rgba(map-get($theme-colors, "dark"), .9);
+$dropdown-link-hover-bg:            rgba(map-get($theme-colors, "dark"), .3);
+
+@import "bootstrap-material-design/scss/bootstrap-material-design";
+
+$enable-shadows: false;
+
+.btn{
+  text-transform: uppercase;
+  border-radius: $border-radius-lg !important;
+}

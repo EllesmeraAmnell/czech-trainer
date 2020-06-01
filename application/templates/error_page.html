@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+<!---------- Navigation ----------->
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('web.quiz') }}">Упражнения</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('web.words') }}">Словарь</a>
+</li>
+{% if current_user.role.value > 0 %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('web.edit_words') }}">Редактирование базы слов</a>
+</li>
+{% endif %}
+{% endblock %}
+
+<!---------- Content ----------->
+{% block content %}
+<div class="col-12">
+    <div class="jumbotron">
+        <h3>Ошибка{{error_code}}: {{error_text}}</h3>
+        <hr class="my-3">
+        {% if content %}
+        <p>{{ content }}</p>
+        {% else %}
+        <p>Что-то пошло не так :с</p>
+        <p>Но Вы всегда можете <a href="/index">вернуться</a> на главную.</p>
+        <br>
+        <p>
+            <a class="btn btn-sm btn-outline-dark" data-toggle="collapse" href="#collapseDevInfo" role="button"
+               aria-expanded="false" aria-controls="collapseDevInfo">
+                Подробнее об ошибке...
+            </a>
+        </p>
+        <div class="collapse" id="collapseDevInfo">
+            <div class="card card-body">
+                {{ error_info }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
