@@ -15,7 +15,7 @@ class Word:
     def __repr__(self):
         return f'{self._id}, {self.rus}, {self.cz}, {self.part_of_speech}, {self.gender}, {self.form}'
 
-    def get_dict(self):
+    def get_dict(self, str_id=False):
         res = {
             'rus': self.rus,
             'cz': self.cz,
@@ -24,7 +24,7 @@ class Word:
             'form': self.form
         }
         if self._id:
-            res['_id'] = self._id
+            res['_id'] = str(self._id) if str_id else self._id
         return res
 
     @staticmethod
@@ -82,29 +82,30 @@ class Verb(Word):
 
     # TODO: дополнить разделением на литературную и разговорную версии
     def correct_ovat(self, conjugation_type):
-        word_skelet = self.cz[:-4]
-        return f'''{word_skelet}{OVAT_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-4]
+        return f'''{word_skeleton}{OVAT_ENDINGS[conjugation_type]}'''
 
     def correct_out(self, conjugation_type):
-        word_skelet = self.cz[:-3]
-        return f'''{word_skelet}{OUT_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-3]
+        return f'''{word_skeleton}{OUT_ENDINGS[conjugation_type]}'''
 
     def correct_at(self, conjugation_type):
-        word_skelet = self.cz[:-2]
-        return f'''{word_skelet}{AT_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-2]
+        return f'''{word_skeleton}{AT_ENDINGS[conjugation_type]}'''
 
     def correct_it_et(self, conjugation_type):
-        word_skelet = self.cz[:-2]
-        return f'''{word_skelet}{IT_ET_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-2]
+        return f'''{word_skeleton}{IT_ET_ENDINGS[conjugation_type]}'''
 
     def correct_est_ezt(self, conjugation_type):
-        word_skelet = self.cz[:-1]
-        word_skelet = word_skelet.replace('é', 'e')
-        return f'''{word_skelet}{EST_EZT_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-1]
+        word_skeleton = word_skeleton.replace('é', 'e')
+        return f'''{word_skeleton}{EST_EZT_ENDINGS[conjugation_type]}'''
 
     def correct_short(self, conjugation_type):
         n = len(self.cz)
-        word_skelet = self.cz[:-1]
-        long_vow = word_skelet[n-2]
-        word_skelet = word_skelet.replace(long_vow, LONG_VOWEL_REPLACEMENT[long_vow])   # а вот тут вполне может быть ошибка, но пока предположу, что всё заебись
-        return f'''{word_skelet}j{EST_EZT_ENDINGS[conjugation_type]}'''
+        word_skeleton = self.cz[:-1]
+        long_vow = word_skeleton[n - 2]
+        # TODO: remove possible danger
+        word_skeleton = word_skeleton.replace(long_vow, LONG_VOWEL_REPLACEMENT[long_vow])
+        return f'''{word_skeleton}j{EST_EZT_ENDINGS[conjugation_type]}'''

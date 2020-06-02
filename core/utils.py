@@ -1,6 +1,8 @@
 import logging
 import os
 
+from bson import ObjectId
+
 from core.word import Word
 from pymongo import MongoClient
 from random import Random
@@ -19,6 +21,12 @@ def save_word(word):
         collection.update_one({'_id': word._id}, {'$set': word.get_dict()})
     else:
         collection.insert_one(word.get_dict())
+
+
+def get_word(value, param='_id'):
+    value = value.lower() if param != '_id' else ObjectId(value)
+    res = collection.find_one({param: value})
+    return Word(res) if res else None
 
 
 def delete_word(word):

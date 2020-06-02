@@ -13,16 +13,16 @@ def create_app():
 
     with app.app_context():
         # Import parts of our application
-        from application import api
-        from application.web import web
+        from application.web import web as web_bp
+        from application.api import blueprint as api_bp
 
         # Register extensions
         login_manager.init_app(app)
-        login_manager.login_view = "login"
+        login_manager.login_view = "web.login"
         mail.init_app(app)
 
         # Register Blueprints
-        app.register_blueprint(api.blueprint)
-        app.register_blueprint(web.web)
+        app.register_blueprint(api_bp)
+        app.register_blueprint(web_bp)
 
         return app
