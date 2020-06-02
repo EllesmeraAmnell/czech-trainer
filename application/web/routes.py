@@ -23,7 +23,7 @@ s = URLSafeTimedSerializer(current_app.config.get('MAIL_SECRET'))
 
 @web.route('/favicon.ico')
 def favicon():
-    return send_from_directory(".", 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory("static", 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @web.route('/img/prague.jpg')
