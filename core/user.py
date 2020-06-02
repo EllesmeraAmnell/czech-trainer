@@ -50,6 +50,9 @@ class User(UserMixin):
     def __repr__(self):
         return self.login
 
+    def __dict__(self):
+        return self.get_dict()
+
     def get_dict(self):
         res = {
             'login': self.login,
@@ -166,7 +169,7 @@ def validate_registration_form(form):
 
 def generate_confirmation_mail(email, token):
     msg = Message('Czech Trainer: подтверждение регистрации', sender='Czech Trainer', recipients=[email])
-    link = url_for('confirm_email', token=token, _external=True)
+    link = url_for('web.confirm_email', token=token, _external=True)
     msg.body = 'Вы получили это письмо, так как данный адрес электронной почты был указан при регистрации на ' \
                'сайте Czech Trainer (http://194.67.90.186/).\nЕсли это были не Вы, проигнорируйте это письмо.\n\n' \
                'Для завершения регистрации перейдите по адресу ниже (ссылка действительна в течение часа):\n' \
