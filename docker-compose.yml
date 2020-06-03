@@ -1,5 +1,5 @@
 web:
-  image: czech-trainer:1.0.5
+  image: czech-trainer:1.0.6
   command: python -u app.py
   container_name: czech-trainer
   ports:
