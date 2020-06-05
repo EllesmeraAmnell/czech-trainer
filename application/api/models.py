@@ -28,6 +28,10 @@ put_word = api.inherit('put_word', del_word, {
     'form': fields.String(required=False, description='Form, only for nouns')
 })
 
+login = api.model('login', {
+    'login': fields.String(required=True, description='Login or e-mail for identification'),
+})
+
 
 class RegistrarionData:
     data = api.model('registration_data', {
