@@ -8,7 +8,7 @@ from flask_restplus._http import HTTPStatus
 
 from application import mail
 from application.api import api
-from application.api.models import creds, RegistrarionData, del_word, put_word, new_word
+from application.api.models import creds, RegistrarionData, del_word, put_word, new_word, login
 from application.web.routes import s
 from core.user import get_user, ValidationResults, User, generate_confirmation_mail, add_new_user, UserRoles
 from core.utils import get_random_words, get_words_list, save_word, delete_word, get_word
@@ -26,6 +26,21 @@ class Profile(Resource):
             abort(HTTPStatus.FORBIDDEN, message='Not authorized')
         return jsonify(name=current_user.name, surname=current_user.surname, login=current_user.login,
                        email=current_user.email, role=current_user.get_role_description())
+
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.BAD_REQUEST: 'User not found',
+    })
+    @api.expect(login)
+    def post(self):
+        # if not current_user.is_authenticated:
+        #     abort(HTTPStatus.FORBIDDEN, message='Not authorized')
+        login = api.payload['login']
+        user = get_user(login, 'login') or get_user(login, 'email')
+        if not user:
+            abort(HTTPStatus.BAD_REQUEST, message="User not found")
+        return jsonify(name=user.name, surname=user.surname, login=user.login,
+                       email=user.email, role=user.get_role_description())
 
 
 @api.route('/login')
