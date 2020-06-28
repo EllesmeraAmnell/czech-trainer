@@ -33,8 +33,8 @@ class Profile(Resource):
     })
     @api.expect(login)
     def post(self):
-        # if not current_user.is_authenticated:
-        #     abort(HTTPStatus.FORBIDDEN, message='Not authorized')
+        if not current_user.is_authenticated:
+            abort(HTTPStatus.FORBIDDEN, message='Not authorized')
         login = api.payload['login']
         user = get_user(login, 'login') or get_user(login, 'email')
         if not user:
@@ -115,8 +115,8 @@ class Quiz(Resource):
         HTTPStatus.FORBIDDEN: 'Not authorized'
     })
     def get(self):
-        # if not current_user.is_authenticated:
-        #     abort(HTTPStatus.FORBIDDEN, message='Not authorized')
+        if not current_user.is_authenticated:
+            abort(HTTPStatus.FORBIDDEN, message='Not authorized')
         words = get_random_words(4)
         random_option = Random().choice(words)
         question, answer = random_option.rus, random_option.cz
@@ -132,8 +132,8 @@ class Quiz(Resource):
 })
 class Words(Resource):
     def get(self):
-        # if not current_user.is_authenticated:
-        #     abort(HTTPStatus.UNAUTHORIZED, message='Not authorized')
+        if not current_user.is_authenticated:
+            abort(HTTPStatus.UNAUTHORIZED, message='Not authorized')
         words_list = get_words_list()
         words = dict()
         for w in words_list:
