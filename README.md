@@ -21,12 +21,12 @@ docker exec -it <command> <container-name>
 
 ### Backup database
 ```
-docker exec -it mongo-db -mongobackup --archive --gzip --db czech > db_backup.gz     
+mongodump --db czech --gzip --archive=/path/to/archive
 ```
 
 ### Restore database
 ```
-docker exec -it mongo-db mongorestore --archive --gzip < db_backup.gz
+mongorestore --archive=/path/to/archive
 ```
 
 ### Update user role
