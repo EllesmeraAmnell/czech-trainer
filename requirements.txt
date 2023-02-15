@@ -7,4 +7,4 @@ gunicorn
 itsdangerous
 pymongo
 requests
-Werkzeug==0.16.0
+Werkzeug==2.2.3
